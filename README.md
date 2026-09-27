@@ -1,3 +1,44 @@
+# Sistem Informasi Penjualan dan Keuangan Toko Madura
+Aplikasi web Laravel untuk mengelola stok barang, supplier, penjualan, pembelian, dan laporan transaksi. Nama tabel serta kolom bisnis mengikuti database aplikasi desktop lama.
+
+## Database Project
+
+Koneksi default `.env` menggunakan database `sistem_informasi_penjualan_dan_keuangan_toko_madura_berbasis_web`. Database ini dibuat khusus untuk project Laravel dan tidak mengubah database lama `warung_sembako`.
+
+## Menggunakan Database Lama
+1. Jalankan MySQL dari Laragon.
+2. Pastikan database `warung_sembako` sudah tersedia dan berisi tabel `barang`, `supplier`, `penjualan`, `penjualan_detail`, `pembelian`, dan `pembelian_detail`.
+3. Konfigurasi `.env` diarahkan ke `127.0.0.1:3306`, database `warung_sembako`, user `root`, dan password kosong seperti konfigurasi lama. Sesuaikan nilainya bila MySQL Anda berbeda.
+4. Jalankan `php artisan serve`, lalu buka `http://127.0.0.1:8000`.
+
+Jangan jalankan `php artisan migrate` atau `php artisan migrate:fresh` pada database lama. Tabel bisnis sudah ada dan migration project baru belum tercatat pada tabel migration database tersebut; gunakan database lama tanpa menjalankan migration.
+
+Jika database lama belum ada, impor `warung_sembako.sql` dari folder project desktop melalui phpMyAdmin, atau buat database kosong bernama `warung_sembako` lalu ikuti langkah instalasi baru.
+
+## Database Baru
+Salin `.env.example` menjadi `.env`, sesuaikan koneksi MySQL, lalu jalankan:
+
+```powershell
+php artisan key:generate
+php artisan migrate --seed
+php artisan serve
+```
+
+Seeder menambahkan sepuluh barang dan satu supplier contoh hanya jika kode barang/supplier tersebut belum ada; nilai data yang sudah tersimpan tidak ditimpa.
+## Fitur
+
+- Dashboard penjualan, pembelian, selisih harian, tren tujuh hari, dan stok menipis.
+- CRUD barang dengan pencarian dan perlindungan penghapusan barang yang memiliki histori transaksi.
+- Penjualan dengan hitung total dan kembalian di server, validasi pembayaran, dan pengurangan stok atomik.
+- Pembelian dari supplier dengan penambahan stok atomik.
+- Laporan penjualan dan pembelian berdasarkan rentang tanggal, siap dicetak.
+
+## Pengujian
+Test menggunakan SQLite in-memory. Jika extension SQLite belum aktif pada PHP CLI Laragon, jalankan:
+
+```powershell
+php -d extension=pdo_sqlite -d extension=sqlite3 vendor/bin/phpunit
+```
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -29,30 +70,7 @@ In addition, [Laracasts](https://laracasts.com) contains thousands of video tuto
 
 You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
 
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+```powershell
+php -d extension=pdo_sqlite -d extension=sqlite3 vendor/bin/phpunit
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
