@@ -4,12 +4,20 @@ namespace Tests\Feature;
 
 use App\Models\Barang;
 use App\Models\Supplier;
+use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\TestCase;
 
 class WarungTransactionTest extends TestCase
 {
     use LazilyRefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->actingAs(User::factory()->create());
+    }
 
     public function test_sale_uses_database_price_and_decreases_stock(): void
     {

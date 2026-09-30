@@ -1,21 +1,30 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WarungController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn () => redirect()->route('dashboard'));
-Route::get('/dashboard', [WarungController::class, 'dashboard'])->name('dashboard');
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'create'])->name('login');
+    Route::post('/login', [AuthController::class, 'store'])->middleware('throttle:5,1')->name('login.store');
+});
 
-Route::get('/stok', [WarungController::class, 'stok'])->name('stok');
-Route::post('/stok/barang', [WarungController::class, 'storeBarang'])->name('barang.store');
-Route::put('/stok/barang/{barang}', [WarungController::class, 'updateBarang'])->name('barang.update');
-Route::delete('/stok/barang/{barang}', [WarungController::class, 'destroyBarang'])->name('barang.destroy');
+Route::middleware('auth')->group(function () {
+    Route::get('/', fn () => redirect()->route('dashboard'));
+    Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
+    Route::get('/dashboard', [WarungController::class, 'dashboard'])->name('dashboard');
 
-Route::get('/penjualan', [WarungController::class, 'penjualan'])->name('penjualan');
-Route::post('/penjualan', [WarungController::class, 'storePenjualan'])->name('penjualan.store');
+    Route::get('/stok', [WarungController::class, 'stok'])->name('stok');
+    Route::post('/stok/barang', [WarungController::class, 'storeBarang'])->name('barang.store');
+    Route::put('/stok/barang/{barang}', [WarungController::class, 'updateBarang'])->name('barang.update');
+    Route::delete('/stok/barang/{barang}', [WarungController::class, 'destroyBarang'])->name('barang.destroy');
 
-Route::get('/pembelian', [WarungController::class, 'pembelian'])->name('pembelian');
-Route::post('/pembelian', [WarungController::class, 'storePembelian'])->name('pembelian.store');
-Route::post('/supplier', [WarungController::class, 'storeSupplier'])->name('supplier.store');
+    Route::get('/penjualan', [WarungController::class, 'penjualan'])->name('penjualan');
+    Route::post('/penjualan', [WarungController::class, 'storePenjualan'])->name('penjualan.store');
 
-Route::get('/laporan', [WarungController::class, 'laporan'])->name('laporan');
+    Route::get('/pembelian', [WarungController::class, 'pembelian'])->name('pembelian');
+    Route::post('/pembelian', [WarungController::class, 'storePembelian'])->name('pembelian.store');
+    Route::post('/supplier', [WarungController::class, 'storeSupplier'])->name('supplier.store');
+
+    Route::get('/laporan', [WarungController::class, 'laporan'])->name('laporan');
+});

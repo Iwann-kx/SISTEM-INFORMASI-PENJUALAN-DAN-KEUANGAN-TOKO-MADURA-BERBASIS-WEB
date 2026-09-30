@@ -43,7 +43,13 @@
     <div class="main">
         <header class="topbar">
             <span class="topbar-title">@yield('section', 'Ringkasan operasional')</span>
-            <span class="topbar-date">{{ now()->translatedFormat('l, d F Y') }}</span>
+            <div style="display:flex;align-items:center;gap:12px">
+                <span class="topbar-date">{{ now()->translatedFormat('l, d F Y') }}</span>
+                <form method="POST" action="{{ route('logout') }}" style="margin:0">
+                    @csrf
+                    <button type="submit" style="border:1px solid var(--line);border-radius:5px;padding:7px 10px;background:var(--surface);color:var(--ink);font-size:11px;font-weight:700"><i class="bi bi-box-arrow-right"></i> Keluar</button>
+                </form>
+            </div>
         </header>
         <main class="content">
             @if (session('success'))

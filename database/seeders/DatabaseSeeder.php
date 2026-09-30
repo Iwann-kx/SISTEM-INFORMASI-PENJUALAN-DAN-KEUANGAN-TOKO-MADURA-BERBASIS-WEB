@@ -4,12 +4,22 @@ namespace Database\Seeders;
 
 use App\Models\Barang;
 use App\Models\Supplier;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        User::updateOrCreate(
+            ['username' => 'kasir1'],
+            [
+                'name' => 'Kasir 1',
+                'email' => 'kasir1@tokomadura.local',
+                'password' => '1234',
+            ],
+        );
+
         $barang = [
             ['BR01', 'Beras', 14113, 50000, 50, 'Kg'],
             ['GR02', 'Garam', 10875, 12000, 50, 'Kg'],
